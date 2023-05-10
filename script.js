@@ -19,3 +19,24 @@ function match(input) {
 
 console.log("parenthesis check --- ", match("[[[[[[]]]]]]]"));
 console.log("parenthesis check --- ", match("[[[[[[[]]]]]]]"));
+
+ston = (function singleton() {
+    function functionClass(age =10) {
+        this.age = age;
+    }
+    let instance;
+    return {
+        getInstance : (age) => {
+            if(!instance) instance = new functionClass(age);            
+            return instance;
+        }
+    }
+})()
+
+console.log(ston.getInstance(15))
+console.log(ston.getInstance())
+console.log(ston.getInstance(10))
+
+const a = ston.getInstance(15);
+const b = ston.getInstance(10);
+console.log("new Singleton --- ", a === b);
