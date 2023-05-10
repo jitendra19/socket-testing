@@ -14,6 +14,7 @@
     <script>
         let searchInput = document.getElementById("search-bar");
         let APICallCount = 0;
+        let usingDebounceAPICount = 0;
         let inputCount = 0;
 
         function debounce(callback, delay) {
@@ -26,16 +27,37 @@
             };
         }
 
-        const getSearchResult = debounce(() => {
-            console.log("API call count", ++APICallCount)
+        function throttle(callback, delay) {
+            let wait = false;
+            return (...args) => {
+                console.log('value of wait', wait);
+                if(wait) return;
+
+                callback(...args);
+                wait = true;
+                console.log('value of wait', wait);
+                setTimeout(() => {
+                    console.log('value of wait in setTimeout', wait);
+                    wait = false;
+                }, delay);
+            }
+        }
+
+        const getSearchResultUsingThrottle = throttle(() => {
+            console.log("API call count using throttlw", ++APICallCount)
+        }, 1000);
+
+        const getSearchResultUsingDebounce = debounce(() => {
+            console.log("API call count debounce", ++usingDebounceAPICount)
         }, 2000);
         
         searchInput.addEventListener("input", ()=> {
             console.log("input count", ++inputCount);
-            getSearchResult();
+            getSearchResultUsingThrottle();
+            getSearchResultUsingDebounce();
         });
     </script>
-    
+
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <script>
         const socket = io("http://127.0.0.1:3000");
