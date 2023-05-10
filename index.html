@@ -7,8 +7,35 @@
     <body>
         <label id="counts"></label>
         <div></div>
-        <button id="click-btn">click me</button>
+        <button id="click-btn">click me!!</button>
+        <div style="height: 100px"></div>
+        Search Input Value: <input type="text" id="search-bar"/>
     </body>
+    <script>
+        let searchInput = document.getElementById("search-bar");
+        let APICallCount = 0;
+        let inputCount = 0;
+
+        function debounce(callback, delay) {
+            let time;
+            return (...args) => {
+                clearTimeout(time);
+                time = setTimeout(() => {
+                    callback(...args);
+                }, delay);
+            };
+        }
+
+        const getSearchResult = debounce(() => {
+            console.log("API call count", ++APICallCount)
+        }, 2000);
+        
+        searchInput.addEventListener("input", ()=> {
+            console.log("input count", ++inputCount);
+            getSearchResult();
+        });
+    </script>
+    
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <script>
         const socket = io("http://127.0.0.1:3000");
