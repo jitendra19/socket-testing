@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>socket.io</title>
+        <style></style>
+    </head>
+    <body>
+        <label id="counts"></label>
+        <div></div>
+        <button id="click-btn">click me</button>
+    </body>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script>
+        const socket = io("http://127.0.0.1:3000");
+        socket.on("connect", ()=> {
+            console.log("server is connected");
+        });
+
+        // const btn =  document.getElementById("click-btn");
+        const btn = document.querySelector("button");
+        const counts =  document.getElementById("counts");
+        // counts.textContent = 0;
+        btn.addEventListener("click", ()=> {
+            console.log("button liked!!");
+            // counts.textContent = ++counts.textContent;
+            socket.emit("liked");
+        })
+        socket.on("likeUpdates", (count) => {
+            counts.textContent = count;
+        });
+    </script>
+</html>
